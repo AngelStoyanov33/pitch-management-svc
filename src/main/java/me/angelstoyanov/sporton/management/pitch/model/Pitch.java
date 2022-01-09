@@ -30,4 +30,75 @@ public class Pitch {
     @BsonProperty("roles_required")
     //TODO: Complex role object
     private List<String> rolesRequired = null;
+
+    public Pitch(String name, PitchType type, List<GeoPoint> bordersGeoData, List<String> rolesRequired) {
+        this.name = name;
+        this.type = type;
+        this.bordersGeoData = bordersGeoData;
+        this.rolesRequired = rolesRequired;
+    }
+
+    public Pitch(String name, PitchType type, List<GeoPoint> bordersGeoData) {
+        this.name = name;
+        this.type = type;
+        this.bordersGeoData = bordersGeoData;
+    }
+
+    public Pitch() {
+    }
+
+    public Pitch(Pitch pitch) {
+        this.name = pitch.name;
+        this.type = pitch.type;
+        this.bordersGeoData = pitch.bordersGeoData;
+        this.rolesRequired = pitch.rolesRequired;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public PitchType getType() {
+        return type;
+    }
+
+    public void setType(PitchType type) {
+        this.type = type;
+    }
+
+    public List<GeoPoint> getBordersGeoData() {
+        return bordersGeoData;
+    }
+
+    public void addGeoPoint(GeoPoint geoPoint) {
+        this.bordersGeoData.add(geoPoint);
+    }
+
+    public void removeGeoPoint(GeoPoint geoPoint) {
+        this.bordersGeoData.remove(geoPoint);
+    }
+
+    public void setBordersGeoData(List<GeoPoint> bordersGeoData) {
+        this.bordersGeoData = bordersGeoData;
+    }
+
+    public List<String> getRolesRequired() {
+        return rolesRequired;
+    }
+
+    public void setRolesRequired(List<String> rolesRequired) {
+        this.rolesRequired = rolesRequired;
+    }
 }
