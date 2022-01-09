@@ -24,9 +24,10 @@ public class Pitch {
 
     @JsonProperty(value = "borders_geo_data", required = true)
     @BsonProperty("borders_geo_data")
-    private BordersGeoData bordersGeoData;
+    private List<GeoPoint> bordersGeoData;
 
     @JsonProperty(value = "roles_required")
     @BsonProperty("roles_required")
-    private List<Role> rolesRequired;
+    //TODO: Complex role object
+    private List<String> rolesRequired = null;
 }
