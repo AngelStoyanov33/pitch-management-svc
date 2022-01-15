@@ -25,7 +25,11 @@ public class GeoPoint {
     public GeoPoint(double latitude, double longitude, double accuracy) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.accuracy = accuracy;
+        this.accuracy = accuracy < 0 ? -1d : accuracy;
+    }
+
+    public GeoPoint(){
+
     }
 
     public double getLatitude() {
