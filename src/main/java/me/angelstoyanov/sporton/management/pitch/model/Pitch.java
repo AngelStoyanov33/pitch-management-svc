@@ -7,11 +7,13 @@ import io.quarkus.mongodb.panache.common.MongoEntity;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @JsonRootName("pitch")
 @JsonPropertyOrder({"id", "name", "type", "borders_geo_data", "roles_required"})
-@MongoEntity(collection = "Pitch", database = "sporton-test-db")
+@MongoEntity(collection = "Pitch", database = "sporton-dev-db")
 public class Pitch {
     @JsonProperty("id")
     public ObjectId id; // used by MongoDB for the _id field
@@ -26,21 +28,33 @@ public class Pitch {
     @BsonProperty("borders_geo_data")
     private List<GeoPoint> bordersGeoData;
 
+    @JsonProperty(value = "wayId", required = true)
+    @BsonProperty("wayId")
+    private long wayId;
+
+    @JsonProperty(value = "tags")
+    @BsonProperty("tags")
+    private Map<String, String> tags;
+
     @JsonProperty(value = "roles_required")
     @BsonProperty("roles_required")
     //TODO: Complex role object
     private List<String> rolesRequired = null;
 
-    public Pitch(String name, PitchType type, List<GeoPoint> bordersGeoData, List<String> rolesRequired) {
+    public Pitch(ObjectId id, String name, PitchType type, List<GeoPoint> bordersGeoData, long wayId, Map<String, String> tags, List<String> rolesRequired) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.bordersGeoData = bordersGeoData;
+        this.wayId = wayId;
+        this.tags = tags;
         this.rolesRequired = rolesRequired;
     }
 
-    public Pitch(String name, PitchType type, List<GeoPoint> bordersGeoData) {
+    public Pitch(String name, PitchType type, long wayId, List<GeoPoint> bordersGeoData) {
         this.name = name;
         this.type = type;
+        this.wayId = wayId;
         this.bordersGeoData = bordersGeoData;
     }
 
@@ -80,6 +94,22 @@ public class Pitch {
 
     public List<GeoPoint> getBordersGeoData() {
         return bordersGeoData;
+    }
+
+    public long getWayId() {
+        return wayId;
+    }
+
+    public void setWayId(long wayId) {
+        this.wayId = wayId;
+    }
+
+    public Map<String, String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Map<String, String> tags) {
+        this.tags = tags;
     }
 
     public void addGeoPoint(GeoPoint geoPoint) {
