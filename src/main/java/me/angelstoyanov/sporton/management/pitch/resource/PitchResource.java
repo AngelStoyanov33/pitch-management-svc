@@ -2,9 +2,10 @@ package me.angelstoyanov.sporton.management.pitch.resource;
 
 import me.angelstoyanov.sporton.management.pitch.exception.PitchAlreadyExistsException;
 import me.angelstoyanov.sporton.management.pitch.exception.PitchNotExistsException;
-import me.angelstoyanov.sporton.management.pitch.model.GeoPoint;
 import me.angelstoyanov.sporton.management.pitch.model.Pitch;
 import me.angelstoyanov.sporton.management.pitch.model.PitchType;
+import me.angelstoyanov.sporton.management.pitch.model.Polygon;
+import me.angelstoyanov.sporton.management.pitch.osm.adapter.OSMAPIAdapter;
 import me.angelstoyanov.sporton.management.pitch.repository.PitchRepository;
 import org.bson.types.ObjectId;
 import org.jboss.resteasy.reactive.ResponseStatus;
@@ -13,8 +14,11 @@ import org.jboss.resteasy.reactive.RestResponse;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Arrays;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -23,6 +27,9 @@ public class PitchResource {
 
     @Inject
     protected PitchRepository pitchRepository;
+
+    @Inject
+    protected OSMAPIAdapter osmapiAdapter;
 
     @POST
     @ResponseStatus(201)
@@ -58,25 +65,6 @@ public class PitchResource {
         return RestResponse.ResponseBuilder.ok(pitch).build();
     }
 
-    @GET
-    @ResponseStatus(200)
-    @Path("/pitch")
-    public Pitch getPitchByLocation(List<GeoPoint> location) {
-
-        if (location != null) {
-            return pitchRepository.findByLocation(location);
-        }
-        return null;
-    }
-
-    @GET
-    @ResponseStatus(200)
-    @Path("/test")
-    public RestResponse<Pitch> test() {
-        return RestResponse.ResponseBuilder.ok(new Pitch("Test pitch", PitchType.FOOTBALL,
-                Arrays.asList(new GeoPoint(42.650050, 23.339383), new GeoPoint(42.650235, 23.339398), new GeoPoint(42.650256, 23.338904), new GeoPoint(42.650078, 23.338893))
-        )).status(RestResponse.Status.OK).build();
-    }
 
     @DELETE
     @ResponseStatus(200)

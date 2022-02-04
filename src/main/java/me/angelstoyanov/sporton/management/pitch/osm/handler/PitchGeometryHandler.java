@@ -5,6 +5,7 @@ import de.westnordost.osmapi.overpass.MapDataWithGeometryHandler;
 import me.angelstoyanov.sporton.management.pitch.model.GeoPoint;
 import me.angelstoyanov.sporton.management.pitch.model.Pitch;
 import me.angelstoyanov.sporton.management.pitch.model.PitchType;
+import me.angelstoyanov.sporton.management.pitch.model.Polygon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -36,19 +37,13 @@ public class PitchGeometryHandler implements MapDataWithGeometryHandler {
     public void handle(@NotNull Way way, @NotNull BoundingBox boundingBox, @NotNull List<LatLon> list) {
         try {
             Pitch pitch = new Pitch();
-            List<GeoPoint> geoPoints = new LinkedList<>();
             pitch.setTags(way.getTags());
             pitch.setName(way.getTags().getOrDefault("name", "Unknown"));
             pitch.setWayId(way.getId());
             pitch.setType(pitchType);
+            pitch.setLocation(new Polygon(list, way.getNodeIds()));
 
-            for (int i = 0; i < list.size(); i++) {
-                geoPoints.add(new GeoPoint(list.get(i).getLatitude(), list.get(i).getLongitude(), way.getNodeIds().get(i)));
-            }
-            pitch.setBordersGeoData(geoPoints);
             this.fetchedPitches.add(pitch);
-
-
         } catch (Exception e) {
             System.out.println("Error while handling way: " + way.getId());
         }

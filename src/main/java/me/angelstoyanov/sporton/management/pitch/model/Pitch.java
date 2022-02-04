@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @JsonRootName("pitch")
-@JsonPropertyOrder({"id", "name", "type", "borders_geo_data", "roles_required"})
+@JsonPropertyOrder({"id", "name", "type", "location", "roles_required"})
 @MongoEntity(collection = "Pitch", database = "sporton-dev-db")
 public class Pitch {
     @JsonProperty("id")
@@ -24,9 +24,9 @@ public class Pitch {
     @JsonProperty(value = "type", required = true)
     private PitchType type;
 
-    @JsonProperty(value = "borders_geo_data", required = true)
-    @BsonProperty("borders_geo_data")
-    private List<GeoPoint> bordersGeoData;
+    @JsonProperty(value = "location", required = true)
+    @BsonProperty("location")
+    private Polygon location;
 
     @JsonProperty(value = "wayId", required = true)
     @BsonProperty("wayId")
@@ -41,21 +41,21 @@ public class Pitch {
     //TODO: Complex role object
     private List<String> rolesRequired = null;
 
-    public Pitch(ObjectId id, String name, PitchType type, List<GeoPoint> bordersGeoData, long wayId, Map<String, String> tags, List<String> rolesRequired) {
+    public Pitch(ObjectId id, String name, PitchType type, Polygon location, long wayId, Map<String, String> tags, List<String> rolesRequired) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.bordersGeoData = bordersGeoData;
+        this.location = location;
         this.wayId = wayId;
         this.tags = tags;
         this.rolesRequired = rolesRequired;
     }
 
-    public Pitch(String name, PitchType type, long wayId, List<GeoPoint> bordersGeoData) {
+    public Pitch(String name, PitchType type, long wayId, Polygon location) {
         this.name = name;
         this.type = type;
         this.wayId = wayId;
-        this.bordersGeoData = bordersGeoData;
+        this.location = location;
     }
 
     public Pitch() {
@@ -64,7 +64,7 @@ public class Pitch {
     public Pitch(Pitch pitch) {
         this.name = pitch.name;
         this.type = pitch.type;
-        this.bordersGeoData = pitch.bordersGeoData;
+        this.location = pitch.location;
         this.rolesRequired = pitch.rolesRequired;
     }
 
@@ -92,8 +92,8 @@ public class Pitch {
         this.type = type;
     }
 
-    public List<GeoPoint> getBordersGeoData() {
-        return bordersGeoData;
+    public Polygon getLocation() {
+        return location;
     }
 
     public long getWayId() {
@@ -112,16 +112,8 @@ public class Pitch {
         this.tags = tags;
     }
 
-    public void addGeoPoint(GeoPoint geoPoint) {
-        this.bordersGeoData.add(geoPoint);
-    }
-
-    public void removeGeoPoint(GeoPoint geoPoint) {
-        this.bordersGeoData.remove(geoPoint);
-    }
-
-    public void setBordersGeoData(List<GeoPoint> bordersGeoData) {
-        this.bordersGeoData = bordersGeoData;
+    public void setLocation(Polygon location) {
+        this.location = location;
     }
 
     public List<String> getRolesRequired() {
