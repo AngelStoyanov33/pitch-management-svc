@@ -65,6 +65,14 @@ public class PitchResource {
         return RestResponse.ResponseBuilder.ok(pitch).build();
     }
 
+    @GET
+    @ResponseStatus(200)
+    @Path("/pitch/locate")
+    public RestResponse<List<Pitch>> getPitchesNearMe(@QueryParam("latitude") double lat, @QueryParam("longitude") double lon, @QueryParam("radius") double radius, @QueryParam("type") PitchType type) {
+        List<Pitch> pitches = pitchRepository.findPitchesNearMe(lat, lon, radius, type);
+        return RestResponse.ResponseBuilder.ok(pitches).build();
+    }
+
 
     @DELETE
     @ResponseStatus(200)

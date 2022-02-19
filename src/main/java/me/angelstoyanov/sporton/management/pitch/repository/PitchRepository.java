@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.util.List;
+import java.util.Locale;
 
 @Named("PitchRepository")
 @ApplicationScoped
@@ -19,17 +20,8 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
     public List<Pitch> findByType(PitchType pitchType) {
         return list("type", pitchType);
     }
-    public Pitch findByLocation(List<GeoPoint> location) {
-        return find("borders_geo_data", location).firstResult();
-    }
-    public Pitch findByName(String name) {
-        return find("name", name).firstResult();
-    }
 
     public Pitch addPitch(Pitch pitch) throws PitchAlreadyExistsException {
-        if (findByName(pitch.getName()) != null) {
-            throw new PitchAlreadyExistsException("Pitch with name " + pitch.getName() + " already exists");
-        }
         persist(pitch);
         return pitch;
     }
@@ -58,5 +50,7 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
         return pitchToUpdate;
     }
 
-
+    public List<Pitch> findPitchesNearMe(double lat, double lon, double radius, PitchType type) {
+        return list(String.format(Locale.US,"{ \"location.coordinates\" : { \"$near\" : { \"$geometry\" : { \"type\" : \"Point\", \"coordinates\" : [%.8f, %.8f] }, $maxDistance: %.8f } }, \"type\" : \"%s\" } ", lat, lon, radius, type));
+    }
 }

@@ -6,15 +6,19 @@ import me.angelstoyanov.sporton.management.pitch.config.OSMAPIConfig;
 import me.angelstoyanov.sporton.management.pitch.model.Pitch;
 import me.angelstoyanov.sporton.management.pitch.model.PitchType;
 import me.angelstoyanov.sporton.management.pitch.osm.handler.PitchGeometryHandler;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.HashSet;
 
+
 @ApplicationScoped
 @Named("OSMAPIAdapter")
 public class OSMAPIAdapter {
+
+    private Logger logger = Logger.getLogger(OSMAPIAdapter.class);
 
     @Inject
     protected OSMAPIConfig config;
@@ -33,7 +37,7 @@ public class OSMAPIAdapter {
         connection = new OsmConnection(getActiveServerInstance(), config.getUserAgent());
         overpassApi = new OverpassMapDataApi(connection);
 
-        System.out.println(buildQuery(pitchType));
+        logger.debugv("Request to OSM API: " + buildQuery(pitchType));
 
         PitchGeometryHandler handler = new PitchGeometryHandler(pitchType);
         overpassApi.queryElementsWithGeometry(buildQuery(pitchType), handler);
