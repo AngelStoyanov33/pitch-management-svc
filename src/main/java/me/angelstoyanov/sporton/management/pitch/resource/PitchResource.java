@@ -1,5 +1,6 @@
 package me.angelstoyanov.sporton.management.pitch.resource;
 
+import io.smallrye.common.constraint.NotNull;
 import me.angelstoyanov.sporton.management.pitch.exception.PitchAlreadyExistsException;
 import me.angelstoyanov.sporton.management.pitch.exception.PitchNotExistsException;
 import me.angelstoyanov.sporton.management.pitch.model.Pitch;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,8 +70,16 @@ public class PitchResource {
     @GET
     @ResponseStatus(200)
     @Path("/pitch/locate")
-    public RestResponse<List<Pitch>> getPitchesNearMe(@QueryParam("latitude") double lat, @QueryParam("longitude") double lon, @QueryParam("radius") double radius, @QueryParam("type") PitchType type) {
-        List<Pitch> pitches = pitchRepository.findPitchesNearMe(lat, lon, radius, type);
+    public RestResponse<List<Pitch>> getPitchesNearMe(@NotNull @QueryParam("latitude") double lat,
+                                                      @NotNull @QueryParam("longitude") double lon,
+                                                      @NotNull @QueryParam("radius") double radius,
+                                                      @QueryParam("type") PitchType type) {
+        List<Pitch> pitches;
+        if(type != null) {
+            pitches = pitchRepository.findPitchesNearMe(lat, lon, radius, type);
+        }else{
+            pitches = pitchRepository.findPitchesNearMe(lat, lon, radius);
+        }
         return RestResponse.ResponseBuilder.ok(pitches).build();
     }
 
@@ -84,6 +94,21 @@ public class PitchResource {
         } catch (PitchNotExistsException e) {
             return RestResponse.ResponseBuilder.ok((Pitch) null).status(RestResponse.Status.NOT_FOUND).build();
         }
+    }
+
+    @GET
+    @ResponseStatus(200)
+    @Path("/pitches")
+    public RestResponse<List<Pitch>> getPitches(@NotNull @QueryParam("region") String region,
+                                                @QueryParam("type") PitchType type) {
+        List<Pitch> pitches;
+        if(type != null) {
+            pitches = pitchRepository.findPitchesByRegionAndType(region, type);
+        }else{
+            pitches = pitchRepository.findPitchesByRegion(region);
+        }
+        return RestResponse.ResponseBuilder.ok(pitches).build();
+
     }
 
 }

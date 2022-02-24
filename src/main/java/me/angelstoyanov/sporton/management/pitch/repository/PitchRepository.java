@@ -20,6 +20,12 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
     public List<Pitch> findByType(PitchType pitchType) {
         return list("type", pitchType);
     }
+    public List<Pitch> findPitchesByRegion(String region) {
+        return list("region", region);
+    }
+    public List<Pitch> findPitchesByRegionAndType(String region, PitchType type) {
+        return list(String.format(Locale.US,"{\"region\":\"%s\",\"type\":\"%s\"}", region, type));
+    }
 
     public Pitch addPitch(Pitch pitch) throws PitchAlreadyExistsException {
         persist(pitch);
@@ -52,5 +58,8 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
 
     public List<Pitch> findPitchesNearMe(double lat, double lon, double radius, PitchType type) {
         return list(String.format(Locale.US,"{ \"location.coordinates\" : { \"$near\" : { \"$geometry\" : { \"type\" : \"Point\", \"coordinates\" : [%.8f, %.8f] }, $maxDistance: %.8f } }, \"type\" : \"%s\" } ", lat, lon, radius, type));
+    }
+    public List<Pitch> findPitchesNearMe(double lat, double lon, double radius) {
+        return list(String.format(Locale.US,"{ \"location.coordinates\" : { \"$near\" : { \"$geometry\" : { \"type\" : \"Point\", \"coordinates\" : [%.8f, %.8f] }, $maxDistance: %.8f } }} ", lat, lon, radius));
     }
 }
