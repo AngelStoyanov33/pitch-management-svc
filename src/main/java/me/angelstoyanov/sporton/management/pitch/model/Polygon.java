@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import de.westnordost.osmapi.map.data.LatLon;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @JsonRootName("location")
 @JsonPropertyOrder({"type", "coordinates"})
+@RegisterForReflection
 public class Polygon {
 
     @JsonProperty(value = "type", required = true, defaultValue = "Polygon")

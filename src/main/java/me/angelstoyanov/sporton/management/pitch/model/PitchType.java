@@ -1,5 +1,8 @@
 package me.angelstoyanov.sporton.management.pitch.model;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public enum PitchType {
     FOOTBALL("soccer", "pitch"),
     VOLLEYBALL("volleyball", "pitch"),

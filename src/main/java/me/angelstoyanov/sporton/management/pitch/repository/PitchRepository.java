@@ -1,6 +1,7 @@
 package me.angelstoyanov.sporton.management.pitch.repository;
 
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import me.angelstoyanov.sporton.management.pitch.exception.PitchAlreadyExistsException;
 import me.angelstoyanov.sporton.management.pitch.exception.PitchNotExistsException;
 import me.angelstoyanov.sporton.management.pitch.model.GeoPoint;
@@ -15,6 +16,7 @@ import java.util.Locale;
 
 @Named("PitchRepository")
 @ApplicationScoped
+@RegisterForReflection
 public class PitchRepository implements PanacheMongoRepository<Pitch> {
 
     public List<Pitch> findByType(PitchType pitchType) {

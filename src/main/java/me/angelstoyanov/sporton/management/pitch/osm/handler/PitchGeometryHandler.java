@@ -2,6 +2,7 @@ package me.angelstoyanov.sporton.management.pitch.osm.handler;
 
 import de.westnordost.osmapi.map.data.*;
 import de.westnordost.osmapi.overpass.MapDataWithGeometryHandler;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import me.angelstoyanov.sporton.management.pitch.model.GeoPoint;
 import me.angelstoyanov.sporton.management.pitch.model.Pitch;
 import me.angelstoyanov.sporton.management.pitch.model.PitchType;
@@ -13,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@RegisterForReflection
 public class PitchGeometryHandler implements MapDataWithGeometryHandler {
 
     private final HashSet<Pitch> fetchedPitches;

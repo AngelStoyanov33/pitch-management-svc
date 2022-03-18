@@ -2,6 +2,7 @@ package me.angelstoyanov.sporton.management.pitch.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.smallrye.common.constraint.NotNull;
 import me.angelstoyanov.sporton.management.pitch.client.RestClientWrapper;
 import me.angelstoyanov.sporton.management.pitch.exception.PitchAlreadyExistsException;
@@ -25,6 +26,7 @@ import java.util.List;
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@RegisterForReflection
 public class PitchResource {
 
     @Inject

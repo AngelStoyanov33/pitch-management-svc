@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import io.quarkus.mongodb.panache.common.MongoEntity;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 @JsonRootName("pitch")
 @JsonPropertyOrder({"id", "name", "type", "location", "way_id", "tags", "attachment_uri", "roles_required"})
 @MongoEntity(collection = "Pitch", database = "sporton-dev-db")
+@RegisterForReflection
 public class Pitch {
     @JsonProperty("id")
     public ObjectId id;

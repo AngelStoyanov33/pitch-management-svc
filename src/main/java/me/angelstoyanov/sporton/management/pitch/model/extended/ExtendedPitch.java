@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import me.angelstoyanov.sporton.management.pitch.model.Pitch;
 import me.angelstoyanov.sporton.management.pitch.model.PitchType;
 import me.angelstoyanov.sporton.management.pitch.model.Polygon;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @JsonRootName("pitch")
 @JsonPropertyOrder({"id", "name", "type", "location", "way_id", "tags", "attachment_uri", "roles_required", "comments", "ratings", "average_rating", "my_rating"})
+@RegisterForReflection
 public class ExtendedPitch {
     @JsonProperty("id")
     public ObjectId id;

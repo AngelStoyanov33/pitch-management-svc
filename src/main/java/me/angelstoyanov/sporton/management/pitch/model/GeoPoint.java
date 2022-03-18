@@ -3,10 +3,12 @@ package me.angelstoyanov.sporton.management.pitch.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import de.westnordost.osmapi.map.data.LatLon;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Objects;
 
+@RegisterForReflection
 @JsonRootName("point")
 public class GeoPoint {
 
