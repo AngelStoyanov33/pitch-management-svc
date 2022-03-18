@@ -27,6 +27,14 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
         return list(String.format(Locale.US,"{\"region\":\"%s\",\"type\":\"%s\"}", region, type));
     }
 
+    public Pitch findByPitchId(ObjectId id) {
+        Pitch pitch = findById(id);
+        if(pitch == null) {
+            throw new PitchNotExistsException("Pitch with id " + id + " does not exist");
+        }
+        return pitch;
+    }
+
     public Pitch addPitch(Pitch pitch) throws PitchAlreadyExistsException {
         persist(pitch);
         return pitch;
@@ -50,8 +58,7 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
         if (findById(id) == null) {
             throw new PitchNotExistsException("Pitch with id " + pitch.getId() + " does not exist");
         }
-        Pitch pitchToUpdate = new Pitch(pitch);
-        pitchToUpdate.setId(id);
+        Pitch pitchToUpdate = new Pitch(id, pitch);
         persistOrUpdate(pitchToUpdate);
         return pitchToUpdate;
     }
