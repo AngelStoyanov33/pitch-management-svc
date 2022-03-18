@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 @JsonRootName("pitch")
-@JsonPropertyOrder({"id", "name", "type", "location", "roles_required"})
+@JsonPropertyOrder({"id", "name", "type", "location", "way_id", "tags", "attachment_uri", "roles_required"})
 @MongoEntity(collection = "Pitch", database = "sporton-dev-db")
 public class Pitch {
     @JsonProperty("id")
-    public ObjectId id; // used by MongoDB for the _id field
+    public ObjectId id;
 
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -28,43 +28,58 @@ public class Pitch {
     @BsonProperty("location")
     private Polygon location;
 
-    @JsonProperty(value = "wayId", required = true)
-    @BsonProperty("wayId")
+    @JsonProperty(value = "way_id", required = true)
+    @BsonProperty("way_id")
     private long wayId;
 
     @JsonProperty(value = "tags")
     @BsonProperty("tags")
     private Map<String, String> tags;
 
+    @JsonProperty("region_id")
+    @BsonProperty("region_id")
+    private ObjectId regionId;
+
+    @JsonProperty("attachment_uri")
+    @BsonProperty("attachment_uri")
+    private String attachment;
+
     @JsonProperty(value = "roles_required")
     @BsonProperty("roles_required")
     //TODO: Complex role object
     private List<String> rolesRequired = null;
 
-    public Pitch(ObjectId id, String name, PitchType type, Polygon location, long wayId, Map<String, String> tags, List<String> rolesRequired) {
+    public Pitch(ObjectId id, String name, PitchType type, Polygon location, long wayId, ObjectId regionId, Map<String, String> tags, List<String> rolesRequired) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.location = location;
         this.wayId = wayId;
         this.tags = tags;
+        this.regionId = regionId;
         this.rolesRequired = rolesRequired;
     }
 
-    public Pitch(String name, PitchType type, long wayId, Polygon location) {
+    public Pitch(String name, PitchType type, long wayId, ObjectId regionId, Polygon location) {
         this.name = name;
         this.type = type;
         this.wayId = wayId;
+        this.regionId = regionId;
         this.location = location;
     }
 
     public Pitch() {
     }
 
-    public Pitch(Pitch pitch) {
+    public Pitch(ObjectId id, Pitch pitch) {
+        this.id = id;
         this.name = pitch.name;
         this.type = pitch.type;
         this.location = pitch.location;
+        this.wayId = pitch.wayId;
+        this.tags = pitch.tags;
+        this.regionId = pitch.regionId;
+        this.attachment = pitch.attachment;
         this.rolesRequired = pitch.rolesRequired;
     }
 
@@ -114,6 +129,22 @@ public class Pitch {
 
     public void setLocation(Polygon location) {
         this.location = location;
+    }
+
+    public ObjectId getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(ObjectId regionId) {
+        this.regionId = regionId;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 
     public List<String> getRolesRequired() {
