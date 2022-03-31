@@ -25,6 +25,9 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
     public List<Pitch> findPitchesByRegion(String region) {
         return list("region", region);
     }
+    public Pitch findByWayId(long wayId) {
+        return find("way_id", wayId).firstResult();
+    }
     public List<Pitch> findPitchesByRegionAndType(String region, PitchType type) {
         return list(String.format(Locale.US,"{\"region\":\"%s\",\"type\":\"%s\"}", region, type));
     }
@@ -38,7 +41,7 @@ public class PitchRepository implements PanacheMongoRepository<Pitch> {
     }
 
     public Pitch addPitch(Pitch pitch) throws PitchAlreadyExistsException {
-        persist(pitch);
+        persistOrUpdate(pitch);
         return pitch;
     }
 

@@ -3,14 +3,12 @@ package me.angelstoyanov.sporton.management.pitch.osm.handler;
 import de.westnordost.osmapi.map.data.*;
 import de.westnordost.osmapi.overpass.MapDataWithGeometryHandler;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import me.angelstoyanov.sporton.management.pitch.model.GeoPoint;
 import me.angelstoyanov.sporton.management.pitch.model.Pitch;
 import me.angelstoyanov.sporton.management.pitch.model.PitchType;
 import me.angelstoyanov.sporton.management.pitch.model.Polygon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +41,7 @@ public class PitchGeometryHandler implements MapDataWithGeometryHandler {
             pitch.setName(way.getTags().getOrDefault("name", "Unknown"));
             pitch.setWayId(way.getId());
             pitch.setType(pitchType);
+            pitch.setVersion(way.getVersion());
             pitch.setLocation(new Polygon(list, way.getNodeIds()));
 
             this.fetchedPitches.add(pitch);
