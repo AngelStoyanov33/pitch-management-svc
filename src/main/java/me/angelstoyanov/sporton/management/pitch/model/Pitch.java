@@ -8,7 +8,6 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +44,10 @@ public class Pitch {
     @JsonProperty("attachment_uri")
     @BsonProperty("attachment_uri")
     private String attachment;
+
+    @JsonProperty(value = "version", required = true)
+    @BsonProperty("version")
+    private long version;
 
     @JsonProperty(value = "roles_required")
     @BsonProperty("roles_required")
@@ -155,5 +158,13 @@ public class Pitch {
 
     public void setRolesRequired(List<String> rolesRequired) {
         this.rolesRequired = rolesRequired;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }
