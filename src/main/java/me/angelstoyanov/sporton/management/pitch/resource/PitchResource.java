@@ -44,7 +44,11 @@ public class PitchResource {
     @POST
     @ResponseStatus(201)
     @Path("/pitch")
-    public RestResponse<Pitch> createPitch(Pitch pitch) {
+    public RestResponse<Pitch> createPitch(Pitch pitch,
+                                           @HeaderParam("X-Requesting-User-Role") String userRole) {
+        if(!userRole.equals("ADMIN")) {
+            return RestResponse.ResponseBuilder.ok((Pitch) null).status(RestResponse.Status.FORBIDDEN).build();
+        }
         try {
             Pitch newPitch = pitchRepository.addPitch(pitch);
             return RestResponse.ResponseBuilder.ok(newPitch).build();
@@ -68,7 +72,12 @@ public class PitchResource {
     @ResponseStatus(200)
     @Consumes({"image/jpeg,image/png,image/bmp"})
     @Path("/pitch/{id}/blob")
-    public RestResponse<Pitch> updatePitchBlob(@PathParam("id") String id, File attachment) {
+    public RestResponse<Pitch> updatePitchBlob(@PathParam("id") String id,
+                                               File attachment,
+                                               @HeaderParam("X-Requesting-User-Role") String userRole) {
+        if(!userRole.equals("ADMIN")) {
+            return RestResponse.ResponseBuilder.ok((Pitch) null).status(RestResponse.Status.FORBIDDEN).build();
+        }
         try {
             Pitch pitch = pitchRepository.findByPitchId(new ObjectId(id));
             if (attachment.length() != 0) {
@@ -135,7 +144,11 @@ public class PitchResource {
     @DELETE
     @ResponseStatus(200)
     @Path("/pitch/{id}")
-    public RestResponse<Pitch> deletePitch(@PathParam("id") String id) {
+    public RestResponse<Pitch> deletePitch(@PathParam("id") String id,
+                                           @HeaderParam("X-Requesting-User-Role") String userRole) {
+        if(!userRole.equals("ADMIN")) {
+            return RestResponse.ResponseBuilder.ok((Pitch) null).status(RestResponse.Status.FORBIDDEN).build();
+        }
         try {
             pitchRepository.deletePitchById(new ObjectId(id));
             return RestResponse.ResponseBuilder.ok((Pitch) null).build();
